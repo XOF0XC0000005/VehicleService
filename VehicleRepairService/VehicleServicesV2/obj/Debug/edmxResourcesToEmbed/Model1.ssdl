@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище VehicleRepairServiceDBModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FullName" Type="nvarchar" MaxLength="100" />
+    <Property Name="Profession" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="MaintanceService">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VehicleId" Type="int" />
+    <Property Name="EmployeeId" Type="int" />
+    <Property Name="WorkTypeId" Type="int" />
+  </EntityType>
+  <EntityType Name="TypeWork">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Vehicle">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Brand" Type="nvarchar" MaxLength="100" />
+    <Property Name="Model" Type="nvarchar" MaxLength="100" />
+    <Property Name="FullName" Type="nvarchar" MaxLength="100" />
+    <Property Name="VehicleTypeId" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="VehicleType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Type" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <Association Name="FK_EmployeeId">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="MaintanceService" Type="Self.MaintanceService" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MaintanceService">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VehicleId">
+    <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="0..1" />
+    <End Role="MaintanceService" Type="Self.MaintanceService" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vehicle">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MaintanceService">
+        <PropertyRef Name="VehicleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_WorkTypeId">
+    <End Role="TypeWork" Type="Self.TypeWork" Multiplicity="0..1" />
+    <End Role="MaintanceService" Type="Self.MaintanceService" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TypeWork">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MaintanceService">
+        <PropertyRef Name="WorkTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище VehicleRepairServiceDBModelContainer">
+    <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MaintanceService" EntityType="Self.MaintanceService" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TypeWork" EntityType="Self.TypeWork" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Vehicle" EntityType="Self.Vehicle" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VehicleType" EntityType="Self.VehicleType" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_EmployeeId" Association="Self.FK_EmployeeId">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="MaintanceService" EntitySet="MaintanceService" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VehicleId" Association="Self.FK_VehicleId">
+      <End Role="Vehicle" EntitySet="Vehicle" />
+      <End Role="MaintanceService" EntitySet="MaintanceService" />
+    </AssociationSet>
+    <AssociationSet Name="FK_WorkTypeId" Association="Self.FK_WorkTypeId">
+      <End Role="TypeWork" EntitySet="TypeWork" />
+      <End Role="MaintanceService" EntitySet="MaintanceService" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

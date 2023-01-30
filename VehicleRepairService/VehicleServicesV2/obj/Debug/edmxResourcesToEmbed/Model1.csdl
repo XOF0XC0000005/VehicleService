@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="VehicleRepairServiceDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FullName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Profession" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="MaintanceService" Relationship="Self.FK_EmployeeId" FromRole="Employee" ToRole="MaintanceService" />
+  </EntityType>
+  <EntityType Name="MaintanceService">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="VehicleId" Type="Int32" />
+    <Property Name="EmployeeId" Type="Int32" />
+    <Property Name="WorkTypeId" Type="Int32" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_EmployeeId" FromRole="MaintanceService" ToRole="Employee" />
+    <NavigationProperty Name="Vehicle" Relationship="Self.FK_VehicleId" FromRole="MaintanceService" ToRole="Vehicle" />
+    <NavigationProperty Name="TypeWork" Relationship="Self.FK_WorkTypeId" FromRole="MaintanceService" ToRole="TypeWork" />
+  </EntityType>
+  <EntityType Name="TypeWork">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="MaintanceService" Relationship="Self.FK_WorkTypeId" FromRole="TypeWork" ToRole="MaintanceService" />
+  </EntityType>
+  <EntityType Name="Vehicle">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Brand" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Model" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="FullName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="VehicleTypeId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="MaintanceService" Relationship="Self.FK_VehicleId" FromRole="Vehicle" ToRole="MaintanceService" />
+  </EntityType>
+  <EntityType Name="VehicleType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="FK_EmployeeId">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="MaintanceService" Type="Self.MaintanceService" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MaintanceService">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VehicleId">
+    <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="0..1" />
+    <End Role="MaintanceService" Type="Self.MaintanceService" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vehicle">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MaintanceService">
+        <PropertyRef Name="VehicleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_WorkTypeId">
+    <End Role="TypeWork" Type="Self.TypeWork" Multiplicity="0..1" />
+    <End Role="MaintanceService" Type="Self.MaintanceService" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TypeWork">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MaintanceService">
+        <PropertyRef Name="WorkTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="VehicleRepairServiceDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Employee" EntityType="Self.Employee" />
+    <EntitySet Name="MaintanceService" EntityType="Self.MaintanceService" />
+    <EntitySet Name="TypeWork" EntityType="Self.TypeWork" />
+    <EntitySet Name="Vehicle" EntityType="Self.Vehicle" />
+    <EntitySet Name="VehicleType" EntityType="Self.VehicleType" />
+    <AssociationSet Name="FK_EmployeeId" Association="Self.FK_EmployeeId">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="MaintanceService" EntitySet="MaintanceService" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VehicleId" Association="Self.FK_VehicleId">
+      <End Role="Vehicle" EntitySet="Vehicle" />
+      <End Role="MaintanceService" EntitySet="MaintanceService" />
+    </AssociationSet>
+    <AssociationSet Name="FK_WorkTypeId" Association="Self.FK_WorkTypeId">
+      <End Role="TypeWork" EntitySet="TypeWork" />
+      <End Role="MaintanceService" EntitySet="MaintanceService" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
